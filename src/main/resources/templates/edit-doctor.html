@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Doctor</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: linear-gradient(45deg, #6a11cb, #2575fc); /* Gradient Background */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;  /* Ensure content aligns from top */
+        min-height: 100vh;
+        animation: backgroundMove 6s infinite alternate;
+        box-sizing: border-box;
+    }
+
+    @keyframes backgroundMove {
+        0% {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+        }
+        100% {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+        }
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1000px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        animation: fadeIn 1s ease-out;
+        margin-top: 20px; /* Ensure space at the top */
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    h1 {
+        text-align: center;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    label {
+        font-weight: bold;
+        margin: 10px 0;
+        display: block;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    input[type="submit"] {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #218838;
+    }
+
+    .back-btn {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        text-align: center;
+        display: block;
+        width: fit-content;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-btn:hover {
+        background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Edit Doctor</h1>
+  <form th:action="@{/doctors/{id}(id=${doctor.id})}" method="post">
+    <input type="hidden" name="_method" value="put"/>
+
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" th:value="${doctor.name}" required>
+
+    <label for="specialization">Specialization</label>
+    <input type="text" id="specialization" name="specialization" th:value="${doctor.specialization}" required>
+
+    <label for="contactNumber">Contact Number</label>
+    <input type="tel" id="contactNumber" name="contactNumber" th:value="${doctor.contactNumber}" required>
+
+    <input type="submit" value="Save Changes">
+  </form>
+
+  <a href="/doctors" class="back-btn">Back to Doctor List</a>
+</div>
+
+</body>
+</html>

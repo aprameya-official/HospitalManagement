@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Doctor</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: gradientMove 6s infinite alternate;
+      margin: 0;
+      padding: 0;
+      flex-direction: column;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      }
+      100% {
+        background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    .form-container {
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    .form-container input:focus {
+      border-color: #28a745;
+      outline: none;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #218838;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      font-size: 14px;
+      color: #007bff;
+    }
+
+    .back-link:hover {
+      color: #0056b3;
+    }
+
+    /* Mobile responsive adjustments */
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 15px;
+      }
+
+      .form-container button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Add New Doctor</h1>
+
+<!-- Form container for the add doctor form -->
+<div class="form-container">
+  <form th:action="@{/doctors}" method="post">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter doctor's name" required>
+    </div>
+    <div>
+      <label for="specialization">Specialization:</label>
+      <input type="text" id="specialization" name="specialization" placeholder="Enter specialization" required>
+    </div>
+    <div>
+      <label for="contactNumber">Contact Number:</label>
+      <input type="text" id="contactNumber" name="contactNumber" placeholder="Enter contact number" required>
+    </div>
+    <div>
+      <button type="submit">Add Doctor</button>
+    </div>
+  </form>
+</div>
+
+<!-- Link to return to doctor list -->
+<a class="back-link" href="/doctors">Back to Doctor List</a>
+
+</body>
+</html>

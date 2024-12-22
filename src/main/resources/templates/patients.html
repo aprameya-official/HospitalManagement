@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patient List</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            animation: fadeIn 1s ease-out;
+            overflow: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .container.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: background-color 0.5s ease;
+        }
+
+        table.dark-mode {
+            background-color: #444;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        th.dark-mode {
+            background-color: #00796b;
+        }
+
+        /* Normal hover effect for table rows */
+        tr:hover {
+            background-color: #f1f1f1;
+            transform: scale(1.02);
+            transition: transform 0.2s ease;
+            color: black;  /* Ensure text color is black */
+        }
+
+        /* Dark mode hover effect for table rows */
+        tr.dark-mode:hover {
+            background-color: #666;
+            color: white; /* Ensure text is white when hovering in dark mode */
+        }
+
+        /* Normal hover effect for links */
+        a:hover {
+            background-color: #0056b3;
+            color: white; /* Ensure text is visible */
+        }
+
+        /* Dark mode hover effect for links */
+        a.dark-mode:hover {
+            background-color: #00796b;
+            color: white; /* Ensure text is visible */
+        }
+
+        button {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 4px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        .add-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Dark/Light Mode Toggle Slider */
+        .mode-toggle-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .mode-toggle {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            border-radius: 25px;
+            background-color: #007bff;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .mode-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .mode-toggle .slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .mode-toggle input:checked + .slider {
+            transform: translateX(25px);
+        }
+
+        body.dark-mode .mode-toggle {
+            background-color: #ff9800;
+        }
+
+        body.dark-mode .mode-toggle .slider {
+            background-color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Dark/Light Mode Toggle Slider -->
+<div class="mode-toggle-wrapper">
+    <label class="mode-toggle">
+        <input type="checkbox" id="modeToggle">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<div class="container">
+    <h1>Patient List</h1>
+
+    <!-- Wrap the table in a scrollable container -->
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Contact Number</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="patient : ${patients}">
+                <td th:text="${patient.id}"></td>
+                <td th:text="${patient.name}"></td>
+                <td th:text="${patient.age}"></td>
+                <td th:text="${patient.gender}"></td>
+                <td th:text="${patient.contactNumber}"></td>
+                <td>
+                    <a th:href="@{/patients/{id}(id=${patient.id})}">Edit</a>
+                    <form th:action="@{/patients/{id}(id=${patient.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="add-btn" href="/patients/add">Add New Patient</a>
+</div>
+
+<script>
+    const modeToggle = document.getElementById('modeToggle');
+    const body = document.body;
+    const container = document.querySelector('.container');
+    const table = document.querySelector('table');
+    const th = document.querySelectorAll('th');
+
+    modeToggle.addEventListener('change', () => {
+        body.classList.toggle('dark-mode');
+        container.classList.toggle('dark-mode');
+        table.classList.toggle('dark-mode');
+        th.forEach(el => el.classList.toggle('dark-mode'));
+    });
+</script>
+
+</body>
+</html>

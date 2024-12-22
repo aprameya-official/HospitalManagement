@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Appointment</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f7f9fc;
+    }
+
+    h1 {
+        text-align: center;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    .form-container {
+        width: 80%;
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .form-container input,
+    .form-container select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    .form-container input:focus,
+    .form-container select:focus {
+        border-color: #4CAF50;
+        outline: none;
+    }
+
+    .form-container button {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .form-container button:hover {
+        background-color: #218838;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        text-decoration: none;
+        font-size: 14px;
+        color: #007bff;
+    }
+
+    .back-link:hover {
+        color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Edit Appointment</h1>
+
+<!-- Form container for editing the appointment details -->
+<div class="form-container">
+  <form th:action="@{/appointments/{id}(id=${appointment.id})}" th:object="${appointment}" method="post">
+    <!-- Hidden field for the appointment id -->
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+      <label for="doctor">Doctor:</label>
+      <select th:field="*{doctor.id}" required>
+        <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
+      </select>
+    </div>
+
+    <div>
+      <label for="patient">Patient:</label>
+      <select th:field="*{patient.id}" required>
+        <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.name}"></option>
+      </select>
+    </div>
+
+    <div>
+      <label for="appointmentDate">Appointment Date:</label>
+      <input type="datetime-local" th:field="*{appointmentDate}" required />
+    </div>
+
+    <div>
+      <button type="submit">Update Appointment</button>
+    </div>
+  </form>
+</div>
+
+<!-- Link to return to appointments list -->
+<a class="back-link" href="/appointments">Back to Appointment List</a>
+
+</body>
+</html>
