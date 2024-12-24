@@ -2,134 +2,218 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Add Doctor</title>
-  <link rel="stylesheet" href="style.css">
   <style>
+    /* General body and gradient background */
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      animation: gradientMove 6s infinite alternate;
-      margin: 0;
-      padding: 0;
-      flex-direction: column;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #B0BEC5, #90A4AE); /* Grayish gradient */
+        transition: background-color 0.5s ease, color 0.5s ease;
     }
 
-    @keyframes gradientMove {
-      0% {
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      }
-      100% {
-        background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-      }
+    body.dark-mode {
+        background: linear-gradient(135deg, #263238, #37474F); /* Dark gray gradient */
+        color: #fff;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 600px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        animation: fadeIn 1s ease-out;
+        margin-top: 20px;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .container.dark-mode {
+        background-color: #455A64;
+        color: #fff;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
     }
 
     h1 {
-      text-align: center;
-      color: #333;
-      margin-top: 20px;
+        text-align: center;
+        margin: 20px 0;
+        color: #333;
     }
 
-    .form-container {
-      width: 80%;
-      max-width: 600px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+        color: #333;
     }
 
-    .form-container label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 16px;
-      color: #333;
+    input[type="text"], input[type="number"], select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        transition: background-color 0.5s ease;
     }
 
-    .form-container input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      font-size: 14px;
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+        outline: none;
+        border-color: #4CAF50;
     }
 
-    .form-container input:focus {
-      border-color: #28a745;
-      outline: none;
+    button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
-    .form-container button {
-      width: 100%;
-      padding: 12px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
+    button:hover {
+        background-color: #218838;
     }
 
-    .form-container button:hover {
-      background-color: #218838;
+    a {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
     }
 
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-      text-decoration: none;
-      font-size: 14px;
-      color: #007bff;
+    a:hover {
+        background-color: #0056b3;
     }
 
-    .back-link:hover {
-      color: #0056b3;
+    /* Dark/Light Mode Toggle Slider */
+    .mode-toggle-wrapper {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
 
-    /* Mobile responsive adjustments */
-    @media (max-width: 600px) {
-      .form-container {
-        padding: 15px;
-      }
-
-      .form-container button {
-        font-size: 14px;
-      }
+    .mode-toggle {
+        position: relative;
+        width: 50px;
+        height: 25px;
+        border-radius: 25px;
+        background-color: #007bff;
+        transition: background-color 0.3s ease;
     }
+
+    .mode-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+    }
+
+    .mode-toggle .slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 21px;
+        height: 21px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+    }
+
+    .mode-toggle input:checked + .slider {
+        transform: translateX(25px);
+    }
+
+    body.dark-mode .mode-toggle {
+        background-color: #ff9800;
+    }
+
+    body.dark-mode .mode-toggle .slider {
+        background-color: #fff;
+    }
+
   </style>
 </head>
 <body>
 
-<h1>Add New Doctor</h1>
-
-<!-- Form container for the add doctor form -->
-<div class="form-container">
-  <form th:action="@{/doctors}" method="post">
-    <div>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" placeholder="Enter doctor's name" required>
-    </div>
-    <div>
-      <label for="specialization">Specialization:</label>
-      <input type="text" id="specialization" name="specialization" placeholder="Enter specialization" required>
-    </div>
-    <div>
-      <label for="contactNumber">Contact Number:</label>
-      <input type="text" id="contactNumber" name="contactNumber" placeholder="Enter contact number" required>
-    </div>
-    <div>
-      <button type="submit">Add Doctor</button>
-    </div>
-  </form>
+<!-- Dark/Light Mode Toggle Slider -->
+<div class="mode-toggle-wrapper">
+  <label class="mode-toggle">
+    <input type="checkbox" id="modeToggle">
+    <span class="slider"></span>
+  </label>
 </div>
 
-<!-- Link to return to doctor list -->
-<a class="back-link" href="/doctors">Back to Doctor List</a>
+<div class="container">
+  <h1>Add New Doctor</h1>
+
+  <!-- Form container for the add doctor form -->
+  <form th:action="@{/doctors}" method="post" th:object="${doctor}">
+
+    <!-- CSRF Token -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" placeholder="Enter doctor's name" required/>
+
+    <label for="specialization">Specialization:</label>
+    <input type="text" id="specialization" th:field="*{specialization}" placeholder="Enter specialization" required/>
+
+    <label for="contactNumber">Contact Number:</label>
+    <input type="text" id="contactNumber" th:field="*{contactNumber}" placeholder="Enter contact number" required/>
+
+    <button type="submit">Add Doctor</button>
+  </form>
+
+  <a href="/doctors">Back to Doctor List</a>
+</div>
+
+<script>
+  const modeToggle = document.getElementById('modeToggle');
+  const body = document.body;
+
+  // Load saved theme from localStorage
+  window.onload = () => {
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add('dark-mode');
+      modeToggle.checked = true;
+    }
+  };
+
+  // Toggle dark mode and save preference
+  modeToggle.addEventListener('change', () => {
+    body.classList.toggle('dark-mode');
+    if (body.classList.contains('dark-mode')) {
+      localStorage.setItem('theme', 'dark');
+    } else {
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
 
 </body>
 </html>

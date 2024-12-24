@@ -25,7 +25,7 @@ public class DoctorController {
     }
 
     // Show the form to add a new doctor
-    @GetMapping("/adddoctor")
+    @GetMapping("/add")
     public String addDoctorForm(Model model) {
         model.addAttribute("doctor", new Doctor());
         return "add-doctor"; // Maps to add-doctor.html in templates

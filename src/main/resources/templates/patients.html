@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Patient List</title>
-    <link rel="stylesheet" href="style.css">
     <style>
+        /* General body and gradient background */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -12,12 +12,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
+            background: linear-gradient(135deg, #B0BEC5, #90A4AE); /* Grayish gradient */
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         body.dark-mode {
-            background-color: #121212;
+            background: linear-gradient(135deg, #263238, #37474F); /* Dark gradient */
             color: #fff;
         }
 
@@ -34,7 +34,7 @@
         }
 
         .container.dark-mode {
-            background-color: #333;
+            background-color: #455A64;
             color: #fff;
         }
 
@@ -53,6 +53,10 @@
             color: #333;
         }
 
+        body.dark-mode h1 {
+            color: #fff;
+        }
+
         .table-container {
             max-height: 400px;
             overflow-y: auto;
@@ -69,7 +73,7 @@
         }
 
         table.dark-mode {
-            background-color: #444;
+            background-color: #2c2c2c;
         }
 
         th, td {
@@ -83,8 +87,8 @@
             color: white;
         }
 
-        th.dark-mode {
-            background-color: #00796b;
+        body.dark-mode th {
+            background-color: #00796b; /* Matching dark mode color */
         }
 
         /* Normal hover effect for table rows */
@@ -92,25 +96,25 @@
             background-color: #f1f1f1;
             transform: scale(1.02);
             transition: transform 0.2s ease;
-            color: black;  /* Ensure text color is black */
+            color: black;
         }
 
         /* Dark mode hover effect for table rows */
-        tr.dark-mode:hover {
+        body.dark-mode tr:hover {
             background-color: #666;
-            color: white; /* Ensure text is white when hovering in dark mode */
+            color: white;
         }
 
         /* Normal hover effect for links */
         a:hover {
             background-color: #0056b3;
-            color: white; /* Ensure text is visible */
+            color: white;
         }
 
         /* Dark mode hover effect for links */
-        a.dark-mode:hover {
+        body.dark-mode a:hover {
             background-color: #00796b;
-            color: white; /* Ensure text is visible */
+            color: white;
         }
 
         button {
@@ -149,7 +153,7 @@
         .mode-toggle-wrapper {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px; /* Move to the left */
             display: flex;
             align-items: center;
         }
@@ -194,6 +198,42 @@
             background-color: #fff;
         }
 
+        /* Style for the action buttons (Edit and Delete) */
+        td a, td button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        td a {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+            padding: 8px 12px;
+        }
+
+        td a:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Style for delete button */
+        td button {
+            background-color: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+            padding: 8px 12px;
+        }
+
+        td button:hover {
+            background-color: #c82333;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -251,12 +291,32 @@
     const table = document.querySelector('table');
     const th = document.querySelectorAll('th');
 
+    // Toggle dark mode based on checkbox state
     modeToggle.addEventListener('change', () => {
         body.classList.toggle('dark-mode');
         container.classList.toggle('dark-mode');
         table.classList.toggle('dark-mode');
         th.forEach(el => el.classList.toggle('dark-mode'));
+
+        // Save the current theme in localStorage
+        if (body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+        } else {
+            localStorage.setItem("theme", "light");
+        }
     });
+
+    // Load theme from localStorage on page load
+    window.onload = function () {
+        const theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            container.classList.add("dark-mode");
+            table.classList.add("dark-mode");
+            th.forEach(el => el.classList.add("dark-mode"));
+            modeToggle.checked = true; // Set the toggle to checked for dark mode
+        }
+    };
 </script>
 
 </body>

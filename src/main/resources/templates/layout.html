@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Hospital Management System</title>
+  <style>
+    /* Place your dark mode and light mode CSS here */
+    body {
+        font-family: Arial, sans-serif;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark-mode {
+        background-color: #263238;
+        color: #fff;
+    }
+
+    /* You can also add other shared styles for all pages */
+  </style>
+</head>
+<body>
+
+<!-- Dark Mode Toggle -->
+<div class="mode-toggle-wrapper" style="position: fixed; top: 20px; left: 20px;">
+  <label class="mode-toggle">
+    <input type="checkbox" id="modeToggle">
+    <span class="slider"></span>
+  </label>
+</div>
+
+<!-- Main content goes here -->
+<div th:replace="${body}"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const modeToggle = document.getElementById('modeToggle');
+      const body = document.body;
+
+      // Check if dark mode is stored in localStorage
+      if (localStorage.getItem('darkMode') === 'true') {
+          body.classList.add('dark-mode');
+          modeToggle.checked = true;
+      }
+
+      modeToggle.addEventListener('change', () => {
+          // Toggle dark-mode class for body
+          body.classList.toggle('dark-mode');
+
+          // Save the dark mode status in localStorage
+          localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+      });
+  });
+</script>
+
+</body>
+</html>

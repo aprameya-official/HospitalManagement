@@ -1,51 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* General Styling */
     body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        background-color: #f8f9fa; /* Light background for light mode */
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        min-height: 100vh;
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+
+    /* Header */
+    header {
+        background-color: #007bff; /* Main blue color */
+        padding: 10px 20px;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        position: relative;
+    }
+
+    /* Dark Mode Toggle */
+    .dark-mode-toggle {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
         align-items: center;
-        height: 100vh;
-        animation: gradientMove 6s infinite alternate;
     }
 
-    @keyframes gradientMove {
-        0% {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        }
-        100% {
-            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-        }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 20px;
     }
 
-    .dashboard-container {
-        width: 80%;
-        margin: 20px auto;
-        padding: 30px;
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 50px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        left: 4px;
+        bottom: 4px;
         background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
+        transition: 0.4s;
+    }
+
+    input:checked + .slider {
+        background-color: #007bff;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(14px);
+    }
+
+    /* Dashboard Container */
+    .dashboard-container {
+        flex-grow: 1;
+        padding: 20px;
     }
 
     h2 {
         text-align: center;
-        margin-bottom: 30px;
         color: #007bff;
+        margin-bottom: 40px;
     }
 
     .section {
         margin-bottom: 40px;
         padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
+        background-color: white;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
     }
 
     .section h3 {
@@ -54,15 +108,14 @@
     }
 
     .btn {
-        background-color: #28a745;
+        background-color: #28a745; /* Green button */
         color: white;
         padding: 10px 20px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        margin-bottom: 20px;
-        text-decoration: none;
         font-weight: bold;
+        text-decoration: none;
     }
 
     .btn:hover {
@@ -77,7 +130,6 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 10px;
     }
 
     table, th, td {
@@ -90,7 +142,7 @@
     }
 
     th {
-        background-color: #007bff;
+        background-color: #007bff; /* Header blue color */
         color: white;
         font-weight: bold;
     }
@@ -116,13 +168,47 @@
         outline: none;
     }
 
-    .table-container {
-        margin-top: 20px;
+    footer {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
     }
 
-    .table-container table {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
+    /* Dark Mode Styles */
+    body.dark-mode {
+        background-color: #121212; /* Dark background for dark mode */
+        color: white;
+    }
+
+    body.dark-mode header {
+        background-color: #333; /* Darker header */
+    }
+
+    body.dark-mode .section {
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .btn {
+        background-color: #28a745;
+    }
+
+    body.dark-mode .btn:hover {
+        background-color: #218838;
+    }
+
+    body.dark-mode table, body.dark-mode th, body.dark-mode td {
+        border: 1px solid #444;
+    }
+
+    body.dark-mode th {
+        background-color: #333;
+    }
+
+    body.dark-mode td {
+        background-color: #222;
     }
 
     /* Small screen adjustments */
@@ -145,13 +231,92 @@
 </head>
 <body>
 
+<header>
+  <h1>Admin Dashboard</h1>
+  <!-- Dark Mode Toggle -->
+  <div class="dark-mode-toggle">
+    <label class="switch">
+      <input type="checkbox" id="darkModeSwitch" onchange="toggleDarkMode()">
+      <span class="slider"></span>
+    </label>
+    <span style="color: white; margin-left: 10px;">Dark Mode</span>
+  </div>
+</header>
+
 <div class="dashboard-container">
-  <h2>Admin Dashboard</h2>
+  <!-- Patient Records Section -->
+  <div class="section">
+    <h3>Patient Records</h3>
+    <a href="/patients">
+      <button class="btn">Manage Patients</button>
+    </a>
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Patient Name</th>
+          <th>Age</th>
+          <th>Contact</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="patient : ${patients}">
+          <td th:text="${patient.id}"></td>
+          <td th:text="${patient.name}">John Doe</td>
+          <td th:text="${patient.age}">30</td>
+          <td th:text="${patient.contactNumber}">(123) 456-7890</td>
+          <td>
+            <button class="action-btn" th:href="@{/admin/edit-patient/{id}(id=${patient.id})}">Edit</button>
+            <button class="action-btn" th:href="@{/admin/delete-patient/{id}(id=${patient.id})}">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Doctor Records Section -->
+  <div class="section">
+    <h3>Doctor Records</h3>
+    <a href="/doctors">
+      <button class="btn">Manage Doctors</button>
+    </a>
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Doctor Name</th>
+          <th>Specialization</th>
+          <th>Contact</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="doctor : ${doctors}">
+          <td th:text="${doctor.id}"></td>
+          <td th:text="${doctor.name}"></td>
+          <td th:text="${doctor.specialization}"></td>
+          <td th:text="${doctor.contactNumber}"></td>
+          <td>
+            <a th:href="@{/doctors/{id}(id=${doctor.id})}">Edit</a>
+            <form th:action="@{/doctors/{id}(id=${doctor.id})}" method="post" style="display:inline;">
+              <input type="hidden" name="_method" value="delete"/>
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <!-- Appointment Management Section -->
   <div class="section">
     <h3>Appointment Management</h3>
-    <a href="/admin/manage-appointments">
+    <a href="/appointments">
       <button class="btn">Manage Appointments</button>
     </a>
     <div class="table-container">
@@ -160,62 +325,45 @@
         <tr>
           <th>Patient Name</th>
           <th>Doctor</th>
-          <th>Time</th>
-          <th>Status</th>
+          <th>Appointment Date</th>
+          <th> <th>Reason</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <!-- Example appointmentService rows -->
-        <tr>
-          <td>John Doe</td>
-          <td>Dr. Smith</td>
-          <td>2024-12-22 10:00 AM</td>
-          <td>Scheduled</td>
+        <!-- Dynamically Render Appointments -->
+        <tr th:each="appointment : ${appointments}">
+          <td th:text="${appointment.patient.name}">John Doe</td>
+          <td th:text="${appointment.doctor.name}">Dr. Smith</td>
+          <td th:text="${appointment.appointmentDate}">2024-12-25</td>
+          <td th:text="${appointment.reason}">Checkup</td>
           <td>
-            <button class="action-btn">Edit</button>
-            <button class="action-btn">Cancel</button>
+            <button class="action-btn" th:href="@{/edit-appointment/{id}(id=${appointment.id})}">Edit</button>
+            <button class="action-btn" th:href="@{/delete-appointment/{id}(id=${appointment.id})}">Cancel</button>
           </td>
         </tr>
-        <!-- Other appointments will be listed here dynamically -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Patient Records Section -->
-  <div class="section">
-    <h3>Patient Records</h3>
-    <a href="/admin/manage-patients">
-      <button class="btn">Manage Patients</button>
-    </a>
-    <div class="table-container">
-      <table>
-        <thead>
-        <tr>
-          <th>Patient Name</th>
-          <th>Age</th>
-          <th>Gender</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Example patient rows -->
-        <tr>
-          <td>Jane Doe</td>
-          <td>30</td>
-          <td>Female</td>
-          <td>
-            <button class="action-btn">View</button>
-            <button class="action-btn">Edit</button>
-          </td>
-        </tr>
-        <!-- Other patients will be listed here dynamically -->
         </tbody>
       </table>
     </div>
   </div>
 </div>
+
+<footer>
+  <p>&copy; 2024 Hospital Management System. All Rights Reserved.</p>
+</footer>
+
+<script>
+  // Function to toggle dark mode
+  function toggleDarkMode() {
+    const body = document.body;
+    const darkModeSwitch = document.getElementById('darkModeSwitch');
+    if (darkModeSwitch.checked) {
+      body.classList.add('dark-mode');
+    } else {
+      body.classList.remove('dark-mode');
+    }
+  }
+</script>
 
 </body>
 </html>

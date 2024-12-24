@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Doctor List</title>
-    <link rel="stylesheet" href="style.css">
     <style>
+        /* General body and gradient background */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -12,12 +12,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
+            background: linear-gradient(135deg, #B0BEC5, #90A4AE); /* Grayish gradient */
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         body.dark-mode {
-            background-color: #121212;
+            background: linear-gradient(135deg, #263238, #37474F); /* Dark gradient */
             color: #fff;
         }
 
@@ -34,7 +34,7 @@
         }
 
         .container.dark-mode {
-            background-color: #333;
+            background-color: #455A64;
             color: #fff;
         }
 
@@ -50,7 +50,11 @@
         h1 {
             text-align: center;
             margin: 20px 0;
-            color: #333;
+            color: #333; /* Default color for light mode */
+        }
+
+        body.dark-mode h1 {
+            color: white; /* Change color to white in dark mode */
         }
 
         .table-container {
@@ -92,25 +96,25 @@
             background-color: #f1f1f1;
             transform: scale(1.02);
             transition: transform 0.2s ease;
-            color: black;  /* Ensure text color is black */
+            color: black;
         }
 
         /* Dark mode hover effect for table rows */
         tr.dark-mode:hover {
             background-color: #666;
-            color: white; /* Ensure text is visible in dark mode */
+            color: white;
         }
 
         /* Normal hover effect for links */
         a:hover {
             background-color: #0056b3;
-            color: white; /* Ensure text is visible */
+            color: white;
         }
 
         /* Dark mode hover effect for links */
         a.dark-mode:hover {
             background-color: #00796b;
-            color: white; /* Ensure text is visible */
+            color: white;
         }
 
         button {
@@ -149,7 +153,7 @@
         .mode-toggle-wrapper {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px; /* Move to the left */
             display: flex;
             align-items: center;
         }
@@ -194,6 +198,42 @@
             background-color: #fff;
         }
 
+        /* Style for the action buttons (Edit and Delete) */
+        td a, td button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        td a {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+            padding: 8px 12px;
+        }
+
+        td a:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Style for delete button */
+        td button {
+            background-color: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+            padding: 8px 12px;
+        }
+
+        td button:hover {
+            background-color: #c82333;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -248,12 +288,34 @@
     const container = document.querySelector('.container');
     const table = document.querySelector('table');
     const th = document.querySelectorAll('th');
+    const h1 = document.querySelector('h1');
 
+    // Check for saved theme in localStorage
+    window.onload = () => {
+        if (localStorage.getItem("theme") === "dark") {
+            body.classList.add("dark-mode");
+            container.classList.add("dark-mode");
+            table.classList.add("dark-mode");
+            th.forEach(el => el.classList.add("dark-mode"));
+            h1.classList.add("dark-mode");
+            modeToggle.checked = true;
+        }
+    };
+
+    // Toggle dark/light mode and store in localStorage
     modeToggle.addEventListener('change', () => {
-        body.classList.toggle('dark-mode');
-        container.classList.toggle('dark-mode');
-        table.classList.toggle('dark-mode');
-        th.forEach(el => el.classList.toggle('dark-mode'));
+        body.classList.toggle("dark-mode");
+        container.classList.toggle("dark-mode");
+        table.classList.toggle("dark-mode");
+        th.forEach(el => el.classList.toggle("dark-mode"));
+        h1.classList.toggle("dark-mode");
+
+        // Save the current theme in localStorage
+        if (body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+        } else {
+            localStorage.setItem("theme", "light");
+        }
     });
 </script>
 

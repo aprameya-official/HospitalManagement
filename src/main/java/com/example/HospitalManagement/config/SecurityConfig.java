@@ -37,21 +37,20 @@ public class SecurityConfig {
     // Main HttpSecurity configuration
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests(auth -> auth
-                        .requestMatchers("/login", "/register","/index.html").permitAll()  // Allow login and register pages
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")       // Restrict admin paths
-                        .anyRequest().authenticated()                        // Require authentication for all other paths
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/login", "/register").permitAll()  // Updated to use requestMatchers()
+                        .anyRequest().authenticated()  // Require authentication for all other requests
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")                             // Custom login page
-                        .defaultSuccessUrl("/", true)                    // Redirect to home on success
+                        .loginPage("/login")  // Custom login page
+                        .loginProcessingUrl("/login")      // URL for submitting login form
+                        .defaultSuccessUrl("/", true)  // Redirect to home after login
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")                            // Logout URL
-                        .logoutSuccessUrl("/login?logout")               // Redirect on logout
-                        .permitAll()
+                .logout(logout -> logout.permitAll()
                 );
+
+        // Disable CSRF protection explicitly if needed (e.g., for APIs)
+        http.csrf().disable();
     }
 }

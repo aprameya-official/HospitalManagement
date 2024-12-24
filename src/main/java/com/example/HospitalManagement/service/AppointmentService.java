@@ -5,6 +5,7 @@ import com.example.HospitalManagement.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,7 +22,7 @@ public class AppointmentService {
         return appointmentRepository.findById(id).orElse(null);
     }
 
-    public void addAppointment(Long patientId, Long doctorId, String appointmentDate, String reason) {
+    public void addAppointment(Long patientId, Long doctorId, LocalDateTime appointmentDate, String reason) {
         Appointment appointment = new Appointment();
         appointment.setPatientId(patientId);
         appointment.setDoctorId(doctorId);
@@ -30,7 +31,7 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
-    public void updateAppointment(Long id, Long patientId, Long doctorId, String appointmentDate, String reason) {
+    public void updateAppointment(Long id, Long patientId, Long doctorId, LocalDateTime appointmentDate, String reason) {
         Appointment appointment = getAppointmentById(id);
         if (appointment != null) {
             appointment.setPatientId(patientId);

@@ -11,8 +11,8 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     private String contactNumber;
+    private String name;
     private String specialization;
 
     // Default constructor (required by JPA)

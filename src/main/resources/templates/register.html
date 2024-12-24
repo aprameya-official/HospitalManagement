@@ -2,65 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Register</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Include Font Awesome CDN for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
   <style>
+    /* Base Styles for Light Mode */
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;
         padding: 0;
         height: 100vh;
-        background: linear-gradient(45deg, #6a11cb, #2575fc); /* Gradient Background */
+        background: linear-gradient(45deg, #b0b0b0, #707070); /* Light Gradient */
         display: flex;
         justify-content: center;
         align-items: center;
-        animation: backgroundMove 6s infinite alternate;
-    }
-
-    @keyframes backgroundMove {
-        0% {
-            background: linear-gradient(45deg, #6a11cb, #2575fc);
-        }
-        100% {
-            background: linear-gradient(45deg, #ff7e5f, #feb47b);
-        }
+        transition: background 0.3s, color 0.3s;
     }
 
     .register-container {
         width: 100%;
-        max-width: 350px;
+        max-width: 380px;
         background-color: rgba(255, 255, 255, 0.9);
         padding: 40px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
         animation: slideIn 0.8s ease-out;
-    }
-
-    @keyframes slideIn {
-        0% {
-            transform: translateY(-100px);
-            opacity: 0;
-        }
-        100% {
-            transform: translateY(0);
-            opacity: 1;
-        }
+        border: 1px solid #ddd;
+        transition: background-color 0.3s, box-shadow 0.3s;
     }
 
     h2 {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         color: #333;
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
 
     .form-group label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         font-weight: bold;
         color: #333;
     }
@@ -68,9 +55,9 @@
     .form-group input,
     .form-group select {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 10px;
         font-size: 16px;
         transition: border 0.3s ease;
     }
@@ -79,38 +66,28 @@
     .form-group select:focus {
         border-color: #007bff;
         outline: none;
-        animation: inputFocus 0.3s ease-out;
-    }
-
-    @keyframes inputFocus {
-        0% {
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        100% {
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.8);
-        }
     }
 
     .btn {
         width: 100%;
-        padding: 12px;
-        background-color: #28a745;
+        padding: 15px;
+        background-color: #007bff;
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         font-size: 18px;
         cursor: pointer;
         transition: background-color 0.3s ease;
     }
 
     .btn:hover {
-        background-color: #218838;
+        background-color: #0056b3;
     }
 
     .login-link {
         text-align: center;
         margin-top: 20px;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .login-link a {
@@ -127,7 +104,7 @@
         color: red;
         text-align: center;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         animation: fadeIn 1s ease-out;
     }
 
@@ -139,9 +116,88 @@
             opacity: 1;
         }
     }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+        background: linear-gradient(45deg, #333, #555); /* Darker Gradient */
+        color: #fff;
+    }
+
+    body.dark-mode .register-container {
+        background-color: rgba(50, 50, 50, 0.8); /* Dark background for container */
+        border: 1px solid #444;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode h2 {
+        color: #fff;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .form-group select {
+        border: 1px solid #444;
+        color: #fff;
+        background-color: #333;
+    }
+
+    body.dark-mode .form-group input:focus,
+    body.dark-mode .form-group select:focus {
+        border-color: #007bff;
+        background-color: #444;
+    }
+
+    body.dark-mode .btn {
+        background-color: #007bff;
+        border-radius: 10px;
+        color: white;
+    }
+
+    body.dark-mode .btn:hover {
+        background-color: #0056b3;
+    }
+
+    body.dark-mode .login-link a {
+        color: #007bff;
+    }
+
+    body.dark-mode .login-link a:hover {
+        color: #0056b3;
+    }
+
+    body.dark-mode .error-message {
+        color: #f44336;
+    }
+
+    /* Fixed Dark Mode Button at Top Left */
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 24px;
+        color: #fff;
+        z-index: 1000;
+    }
+
+    .theme-toggle i {
+        transition: color 0.3s ease;
+    }
+
+    /* Icon change on dark mode */
+    body.dark-mode .theme-toggle i {
+        color: #ffcc00; /* Gold color for the sun icon */
+    }
+
   </style>
 </head>
 <body>
+
+<!-- Dark Mode Toggle Button -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  <i class="fas fa-moon" id="theme-icon"></i>
+</button>
 
 <div class="register-container">
   <h2>Register</h2>
@@ -188,11 +244,40 @@
     <button type="submit" class="btn">Register</button>
   </form>
 
-  <!-- Link to login page -->
   <div class="login-link">
     <p>Already have an account? <a href="/login">Login here</a></p>
   </div>
 </div>
 
+<script>
+  // Function to toggle dark mode
+  function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById("theme-icon");
+
+      body.classList.toggle("dark-mode");
+
+      // Change icon based on mode
+      if (body.classList.contains("dark-mode")) {
+          themeIcon.classList.remove("fa-moon");
+          themeIcon.classList.add("fa-sun");
+          localStorage.setItem("theme", "dark");
+      } else {
+          themeIcon.classList.remove("fa-sun");
+          themeIcon.classList.add("fa-moon");
+          localStorage.setItem("theme", "light");
+      }
+  }
+
+  // Check the saved theme from localStorage and apply it
+  window.onload = () => {
+      if (localStorage.getItem("theme") === "dark") {
+          document.body.classList.add("dark-mode");
+          document.getElementById("theme-icon").classList.remove("fa-moon");
+          document.getElementById("theme-icon").classList.add("fa-sun");
+      }
+  };
+</script>
+<script src="dark-mode.js"></script>
 </body>
 </html>

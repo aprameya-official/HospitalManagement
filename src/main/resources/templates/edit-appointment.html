@@ -5,10 +5,48 @@
   <link rel="stylesheet" href="style.css">
   <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Arial', sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f7f9fc;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #B0BEC5, #90A4AE); /* Light mode gradient */
+        transition: background-color 0.5s ease, color 0.5s ease;
+        overflow: hidden; /* Prevent body overflow */
+    }
+
+    body.dark-mode {
+        background: linear-gradient(135deg, #263238, #37474F); /* Dark mode gradient */
+        color: #fff;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 800px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-out;
+        transition: background-color 0.5s ease, color 0.5s ease;
+        margin: 20px;
+        box-sizing: border-box; /* Ensure padding doesn't affect size */
+        overflow: hidden; /* Prevent content overflow */
+    }
+
+    body.dark-mode .container {
+        background-color: #455A64;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
     }
 
     h1 {
@@ -17,40 +55,48 @@
         color: #333;
     }
 
-    .form-container {
-        width: 80%;
-        max-width: 600px;
-        margin: 0 auto;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    body.dark-mode h1 {
+        color: #fff;
     }
 
-    .form-container label {
+    .form-container {
+        width: 100%;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s;
+        box-sizing: border-box; /* Ensure padding doesn't affect size */
+    }
+
+    body.dark-mode .form-container {
+        background: #34495e;
+    }
+
+    label {
         display: block;
         margin-bottom: 8px;
         font-size: 16px;
-        color: #333;
+        color: inherit;
     }
 
-    .form-container input,
-    .form-container select {
+    input, select {
         width: 100%;
         padding: 12px;
         margin-bottom: 15px;
         border-radius: 4px;
         border: 1px solid #ddd;
         font-size: 14px;
+        transition: border-color 0.3s;
+        box-sizing: border-box; /* Ensure padding doesn't affect size */
     }
 
-    .form-container input:focus,
-    .form-container select:focus {
+    input:focus, select:focus {
         border-color: #4CAF50;
         outline: none;
     }
 
-    .form-container button {
+    button {
         width: 100%;
         padding: 12px;
         background-color: #28a745;
@@ -59,63 +105,228 @@
         border-radius: 4px;
         font-size: 16px;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-sizing: border-box; /* Ensure padding doesn't affect size */
     }
 
-    .form-container button:hover {
+    button:hover {
         background-color: #218838;
     }
 
-    .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        text-decoration: none;
-        font-size: 14px;
-        color: #007bff;
+    .back-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-sizing: border-box; /* Ensure padding doesn't affect size */
+        margin-top: 20px; /* Space between the form and the button */
     }
 
-    .back-link:hover {
-        color: #0056b3;
+    .back-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Dark Mode Styling for Table */
+    .table-container {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+        margin: 20px 0;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        transition: background-color 0.5s ease;
+    }
+
+    body.dark-mode table {
+        background-color: #2c2c2c;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #4CAF50; /* Green color in light mode */
+        color: white;
+    }
+
+    body.dark-mode th {
+        background-color: #00796b; /* Dark teal in dark mode */
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+        transform: scale(1.02);
+        transition: transform 0.2s ease;
+        color: black;
+    }
+
+    body.dark-mode tr:hover {
+        background-color: #666;
+        color: white;
+    }
+
+    a:hover {
+        background-color: #00796b;
+        color: white;
+    }
+
+    body.dark-mode a:hover {
+        background-color: #00796b;
+        color: white;
+    }
+
+    /* Dark Mode Toggle Slider */
+    .mode-toggle-wrapper {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .mode-toggle {
+        position: relative;
+        width: 50px;
+        height: 25px;
+        border-radius: 25px;
+        background-color: #007bff;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .mode-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+    }
+
+    .mode-toggle .slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 21px;
+        height: 21px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+    }
+
+    .mode-toggle input:checked + .slider {
+        transform: translateX(25px);
+    }
+
+    body.dark-mode .mode-toggle {
+        background-color: #ff9800;
+    }
+
+    body.dark-mode .mode-toggle .slider {
+        background-color: #fff;
     }
   </style>
 </head>
 <body>
 
-<h1>Edit Appointment</h1>
+<!-- Dark/Light Mode Toggle Slider at Top Left -->
+<div class="mode-toggle-wrapper">
+  <label class="mode-toggle">
+    <input type="checkbox" id="modeToggle">
+    <span class="slider"></span>
+  </label>
+</div>
 
-<!-- Form container for editing the appointment details -->
-<div class="form-container">
-  <form th:action="@{/appointments/{id}(id=${appointment.id})}" th:object="${appointment}" method="post">
-    <!-- Hidden field for the appointment id -->
-    <input type="hidden" th:field="*{id}" />
+<div class="container">
+  <h1>Edit Appointment</h1>
 
-    <div>
-      <label for="doctor">Doctor:</label>
-      <select th:field="*{doctor.id}" required>
-        <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
-      </select>
-    </div>
+  <!-- Form container for editing the appointment details -->
+  <div class="form-container">
+    <form th:action="@{/appointments/{id}(id=${appointment.id})}" th:object="${appointment}" method="post">
+      <input type="hidden" th:field="*{id}" />
 
-    <div>
-      <label for="patient">Patient:</label>
-      <select th:field="*{patient.id}" required>
-        <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.name}"></option>
-      </select>
-    </div>
+      <div>
+        <label for="doctor">Doctor:</label>
+        <select th:field="*{doctorId}" required>
+          <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
+        </select>
+      </div>
 
-    <div>
-      <label for="appointmentDate">Appointment Date:</label>
-      <input type="datetime-local" th:field="*{appointmentDate}" required />
-    </div>
+      <div>
+        <label for="patient">Patient:</label>
+        <select th:field="*{patientId}" required>
+          <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.name}"></option>
+        </select>
+      </div>
 
-    <div>
-      <button type="submit">Update Appointment</button>
-    </div>
+      <div>
+        <label for="appointmentDate">Appointment Date:</label>
+        <input type="datetime-local" th:field="*{appointmentDate}" required />
+      </div>
+
+      <div>
+        <label for="reason">Reason:</label>
+        <input type="text" th:field="*{reason}" required />
+      </div>
+
+      <div>
+        <button type="submit">Update Appointment</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Back Button as a Button -->
+  <form action="/appointments" method="get">
+    <button type="submit" class="back-btn">Back to Appointment List</button>
   </form>
 </div>
 
-<!-- Link to return to appointments list -->
-<a class="back-link" href="/appointments">Back to Appointment List</a>
+<script>
+  const modeToggle = document.getElementById('modeToggle');
+   const body = document.body;
+   const container = document.querySelector('.container');
+   const table = document.querySelector('table');
+   const th = document.querySelectorAll('th');
+
+   // Toggle dark mode based on checkbox state
+   modeToggle.addEventListener('change', () => {
+       body.classList.toggle('dark-mode');
+       container.classList.toggle('dark-mode');
+       table.classList.toggle('dark-mode');
+       th.forEach(el => el.classList.toggle('dark-mode'));
+
+       // Save the current theme in localStorage
+       if (body.classList.contains("dark-mode")) {
+           localStorage.setItem("theme", "dark");
+       } else {
+           localStorage.setItem("theme", "light");
+       }
+   });
+
+   // Load theme from localStorage on page load
+   window.onload = function () {
+       const theme = localStorage.getItem("theme");
+       if (theme === "dark") {
+           body.classList.add("dark-mode");
+           container.classList.add("dark-mode");
+           table.classList.add("dark-mode");
+           th.forEach(el => el.classList.add("dark-mode"));
+           modeToggle.checked = true; // Set the toggle to checked for dark mode
+       }
+   };
+</script>
 
 </body>
 </html>

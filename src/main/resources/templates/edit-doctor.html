@@ -2,29 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Edit Doctor</title>
-  <link rel="stylesheet" href="style.css">
   <style>
+    /* General body and gradient background */
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;
         padding: 0;
-        height: 100%;
-        background: linear-gradient(45deg, #6a11cb, #2575fc); /* Gradient Background */
+        height: 100vh;
         display: flex;
         justify-content: center;
-        align-items: flex-start;  /* Ensure content aligns from top */
-        min-height: 100vh;
-        animation: backgroundMove 6s infinite alternate;
-        box-sizing: border-box;
+        align-items: center;
+        background: linear-gradient(135deg, #B0BEC5, #90A4AE); /* Grayish gradient */
+        transition: background-color 0.5s ease, color 0.5s ease;
     }
 
-    @keyframes backgroundMove {
-        0% {
-            background: linear-gradient(45deg, #6a11cb, #2575fc);
-        }
-        100% {
-            background: linear-gradient(45deg, #ff7e5f, #feb47b);
-        }
+    body.dark-mode {
+        background: linear-gradient(135deg, #263238, #37474F); /* Dark gradient */
+        color: #fff;
     }
 
     .container {
@@ -35,7 +29,13 @@
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         animation: fadeIn 1s ease-out;
-        margin-top: 20px; /* Ensure space at the top */
+        overflow: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .container.dark-mode {
+        background-color: #455A64;
+        color: #fff;
     }
 
     @keyframes fadeIn {
@@ -51,6 +51,10 @@
         text-align: center;
         margin: 20px 0;
         color: #333;
+    }
+
+    h1.dark-mode {
+        color: #fff;
     }
 
     label {
@@ -104,9 +108,68 @@
     .back-btn:hover {
         background-color: #0056b3;
     }
+
+    /* Dark/Light Mode Toggle Slider */
+    .mode-toggle-wrapper {
+        position: fixed;
+        top: 20px;
+        left: 20px;  /* Align to the left */
+        display: flex;
+        align-items: center;
+        z-index: 10; /* Ensure the toggle button is above other elements */
+    }
+
+    .mode-toggle {
+        position: relative;
+        width: 50px;
+        height: 25px;
+        border-radius: 25px;
+        background-color: #007bff;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .mode-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+    }
+
+    .mode-toggle .slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 21px;
+        height: 21px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+    }
+
+    .mode-toggle input:checked + .slider {
+        transform: translateX(25px);
+    }
+
+    body.dark-mode .mode-toggle {
+        background-color: #ff9800;
+    }
+
+    body.dark-mode .mode-toggle .slider {
+        background-color: #fff;
+    }
+
   </style>
 </head>
 <body>
+
+<!-- Dark/Light Mode Toggle Slider -->
+<div class="mode-toggle-wrapper">
+  <label class="mode-toggle">
+    <input type="checkbox" id="modeToggle">
+    <span class="slider"></span>
+  </label>
+</div>
 
 <div class="container">
   <h1>Edit Doctor</h1>
@@ -128,5 +191,31 @@
   <a href="/doctors" class="back-btn">Back to Doctor List</a>
 </div>
 
+<script>
+  const modeToggle = document.getElementById('modeToggle');
+const body = document.body;
+const container = document.querySelector('.container');
+
+// Load saved theme from localStorage
+window.onload = () => {
+  if (localStorage.getItem("theme") === "dark") {
+    body.classList.add('dark-mode');
+    container.classList.add('dark-mode');
+    modeToggle.checked = true;
+  }
+};
+
+// Toggle dark mode and save preference
+modeToggle.addEventListener('change', () => {
+  body.classList.toggle('dark-mode');
+  container.classList.toggle('dark-mode');
+  if (body.classList.contains('dark-mode')) {
+    localStorage.setItem('theme', 'dark');
+  } else {
+    localStorage.setItem('theme', 'light');
+  }
+});
+</script>
+<script src="dark-mode.js"></script>
 </body>
 </html>
